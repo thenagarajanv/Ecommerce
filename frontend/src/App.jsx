@@ -6,6 +6,8 @@ import Login from './pages/Login.jsx';
 import Register from './components/Register.jsx';
 import { AuthProvider } from "./context/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import DisplayProducts from "./Products/Category.jsx";
+import CategoryDetail from './pages/CategoryDetail.jsx';
 
 const App = () => {
   const [user, setUser] = useState("Guest");
@@ -14,16 +16,23 @@ const App = () => {
       <Router>
         <Routes>
           <Route path='/auth/login' element={
-            <Login setUser={setUser} />          // <Login user={user} setUser={setUser}/>
+            <Login setUser={setUser} />      
             }/>
-          <Route path='/register' element={<Register/>}/>
+          <Route path='/auth/register' element={<Register/>}/>
           <Route path='/' element={
             <ProtectedRoute>
               <Dashboard user={user} setUser={setUser}/>
             </ProtectedRoute>
             }/>
-          <Route path='/Category' element={<Category/>}/>
+          {/* <Route path='/Category' element={<Category/>}/>
           <Route path='*' element={<Navigate to='/'/>}/>
+          <Route path='/category/:categoryName' element={<CategoryDetail />} />
+          <Route path='/DisplayProducts' element={<DisplayProducts/>}/>
+         */}
+        <Route path='/Category' element={<Category />} />
+        <Route path='/DisplayProducts' element={<DisplayProducts />} />
+        <Route path='/category/:categoryName' element={<CategoryDetail />} />
+        <Route path='*' element={<Navigate to='/' />} />
         </Routes>
       </Router>
     </AuthProvider>

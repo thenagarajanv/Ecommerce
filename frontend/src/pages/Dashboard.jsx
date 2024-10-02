@@ -1,14 +1,15 @@
 import React from 'react'
 import NavBar from './NavBar'
-import Category from '../Products/Category'
+import DisplayCatWise from './DisplayCatWise';
 
 const Dashboard = () => {
   return (
     <div>
-      <Category/>
+      <NavBar/>
+      <DisplayCatWise/>
     </div>
   )
 
 }
 
-export default Dashboard
+export default Dashboard;
