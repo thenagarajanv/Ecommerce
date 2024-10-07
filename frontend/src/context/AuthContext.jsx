@@ -28,6 +28,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     await signOut(auth);
+    setUser(null);
   };
 
   const isAuthenticated = !!user;

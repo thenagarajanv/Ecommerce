@@ -20,10 +20,10 @@ const ProductSearch = () => {
 
     useEffect(() => {
         if (debouncedQuery) {
-            handleSearch();
+            handleSearch(); 
         } else {
-            setProducts([]);
-            setError(null);
+            setProducts([]); 
+            setError(null); 
         }
     }, [debouncedQuery]);
 
@@ -33,21 +33,9 @@ const ProductSearch = () => {
         setProducts([]);
 
         try {
-            const response = await axios.post(`/api/products/_search`, {
-                query: {
-                    bool: {
-                        should: [
-                            { regexp: { product_name: `.*${debouncedQuery}.*` } },
-                            { regexp: { description: `.*${debouncedQuery}.*` } },
-                            { regexp: { tags: `.*${debouncedQuery}.*` } }
-                        ]
-                    }
-                }
-            });
-
-            if (response.data.hits && response.data.hits.hits) {
-                const fetchedProducts = response.data.hits.hits.map(hit => hit._source);
-                setProducts(fetchedProducts);
+            const response = await axios.get(`http://localhost:8000/store/search/?q=${debouncedQuery}`);
+            if (response.data && Array.isArray(response.data)) {
+                setProducts(response.data);
             } else {
                 setError('No products found.');
             }
@@ -68,31 +56,27 @@ const ProductSearch = () => {
                             type="text"
                             className="form-control form-control-sm" 
                             value={query}
-                            onChange={(e) => setQuery(e.target.value)}
+                            onChange={(e) => setQuery(e.target.value)} 
                             placeholder="Search for products..."
                             style={{ textAlign: 'center' }}
                         />
                     </div>
-                    {/* <button className="btn btn-primary btn-sm mb-3" onClick={handleSearch}>Search</button> */}
                 </div>
             </div>
 
             {loading && <p>Loading...</p>}
             {error && <p className="text-danger">{error}</p>}
-
             {products.length > 0 ? (
                 <Table striped bordered hover size="sm">
                     <tbody>
                         {products.map(product => (
                             <tr key={product.product_id}>
-                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{product.product_name}</td> {/* Center horizontally and vertically */}
+                                <td style={{ textAlign: 'center', verticalAlign: 'middle' }}>{product.product_name}</td>
                                 <td>
-                                    <img 
-                                        src={product.image_url} 
-                                        alt={product.product_name} 
-                                        style={{ width: '100px' }} 
-                                        className="mb-2" 
-                                    />
+                                <img src={product.image_url} alt={product.product_name} style={{ width: '100px' }} className="mb-2" />
+                                </td>
+                                <td>
+                                <td  className="mb-2" style={{ textAlign: 'center', width: '100px',  verticalAlign: 'middle' }}>{product.discounted_price}</td>
                                 </td>
                             </tr>
                         ))}

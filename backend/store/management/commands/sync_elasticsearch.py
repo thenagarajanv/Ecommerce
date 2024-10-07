@@ -1,37 +1,3 @@
-# from django.core.management.base import BaseCommand
-# from elasticsearch import Elasticsearch
-
-# class Command(BaseCommand):
-#     help = 'Retrieve all indexed products from Elasticsearch and store them in an array'
-
-#     def handle(self, *args, **kwargs):
-#         es = Elasticsearch(['http://localhost:9200/'])
-
-#         # Define the index and search parameters
-#         index_name = 'products'  # Replace with your actual index name
-#         search_body = {
-#             "query": {
-#                 "match_all": {}
-#             }
-#         }
-
-#         # Execute the search query
-#         res = es.search(index=index_name, body=search_body, size=10000)  # Adjust size as needed
-
-#         # Store the results in an array
-#         products_array = []
-#         for hit in res['hits']['hits']:
-#             products_array.append(hit['_source'])
-
-#         # Optionally print the results or use the array as needed
-#         for product in products_array:
-#             self.stdout.write(self.style.SUCCESS(str(product)))
-
-#         self.stdout.write(self.style.SUCCESS(f'Successfully retrieved {len(products_array)} products from Elasticsearch'))
-
-
-# your_app/management/commands/sync_products.py
-
 from django.core.management.base import BaseCommand
 from elasticsearch import Elasticsearch
 from store.models import Product

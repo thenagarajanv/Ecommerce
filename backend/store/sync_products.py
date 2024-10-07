@@ -9,7 +9,6 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         es = Elasticsearch(['localhost:9200'])
 
-        # Fetch all products from the MySQL database
         products = Product.objects.all()
 
         for product in products:

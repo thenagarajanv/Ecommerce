@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { auth, provider } from '../components/firebase';
-import { useNavigate , Link} from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { signInWithPopup } from 'firebase/auth';
 import '../pages/Login.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 const Register = ({ setUser }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(null); 
-  const Navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false); 
+  const navigate = useNavigate();
 
   const handleSignWithGoogle = async () => {
     try {
       await signInWithPopup(auth, provider);
-      Navigate('/', { replace: true });
+      navigate('/', { replace: true });
     } catch (e) {
       console.log(e);
     }
@@ -22,12 +25,12 @@ const Register = ({ setUser }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null); 
+    setError(null);
     try {
       await auth.createUserWithEmailAndPassword(email, password);
       alert('Email ID Registered Successfully, Please Login!');
       setUser(email);
-      Navigate('/auth/login');
+      navigate('/auth/login');
     } catch (error) {
       console.log(error);
       if (error.code === 'auth/email-already-in-use') {
@@ -36,7 +39,7 @@ const Register = ({ setUser }) => {
         setError('Password should be at least 6 characters.');
       } else if (error.code === 'auth/invalid-email') {
         setError('Invalid email format.');
-      } 
+      }
     }
   };
 
@@ -45,7 +48,7 @@ const Register = ({ setUser }) => {
       <div className="card p-4" style={{ width: '300px' }}>
         <h2 className="text-center mb-4">Register</h2>
         <form onSubmit={handleSubmit}>
-          {error && <p className="text-danger">{error}</p>} 
+          {error && <p className="text-danger">{error}</p>}
           <div className="form-group mb-3">
             <label htmlFor="email">Email address</label>
             <input
@@ -58,10 +61,10 @@ const Register = ({ setUser }) => {
               required
             />
           </div>
-          <div className="form-group mb-3">
+          <div className="form-group mb-3 position-relative">
             <label htmlFor="password">Password</label>
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'} 
               className="form-control"
               id="password"
               placeholder="Enter password"
@@ -69,6 +72,12 @@ const Register = ({ setUser }) => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <span
+              onClick={() => setShowPassword(!showPassword)} 
+              style={{ cursor: 'pointer', position: 'absolute', right: '5px', top: '50%' }}
+            >
+              <FontAwesomeIcon icon={showPassword ? faEye : faEyeSlash} />
+            </span>
           </div>
           <button type="submit" className="btn btn-primary w-100">
             Submit
@@ -82,7 +91,7 @@ const Register = ({ setUser }) => {
         >
           Sign in with Google
         </button>
-        <Link style={{textDecoration:"none"}} to='/auth/login'><p>Login</p></Link>
+        <Link to='/auth/login' style={{ textDecoration: "none !important", color: "black" }}>Login</Link>
       </div>
     </div>
   );

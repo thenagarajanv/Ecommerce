@@ -71,7 +71,7 @@ const LoginForm = ({ user, setUser }) => {
         >
           Sign in with Google
         </button>
-        <Link to="/auth/register">Register</Link> {/* Correct usage of Link */}
+        <Link to="/auth/register" style={{ textDecoration: "none !important", color:"black"}}>Register</Link> 
       </div>
     </div>
   );
